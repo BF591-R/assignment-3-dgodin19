@@ -99,7 +99,7 @@ affy_to_hgnc <- function(affy_vector) {
     mart <- useDataset("hsapiens_gene_ensembl",mart)
     result <- getBM(attributes = c("affy_hg_u133_plus_2", "hgnc_symbol"),
         filters    = "affy_hg_u133_plus_2",
-        values     = affy_vector, 
+        values     = affy_vector,
         mart       = mart)
     result <- result %>% select(affy_hg_u133_plus_2, hgnc_symbol)
     return(result)
@@ -136,15 +136,15 @@ affy_to_hgnc <- function(affy_vector) {
 #' `1 202860_at   DENND4B good        7.16      ...`
 #' `2 204340_at   TMEM187 good        6.40      ...`
 reduce_data <- function(expr_tibble, names_ids, good_genes, bad_genes){
-    table1 <- expr_tibble %>% 
+    table1 <- expr_tibble %>%
     left_join(names_ids, by = c("probe" = "affy_hg_u133_plus_2"))
-    result <- table1 %>% 
+    result <- table1 %>%
       mutate(gene_set = case_when(hgnc_symbol %in% good_genes ~ "good",
           hgnc_symbol %in% bad_genes  ~ "bad",
           TRUE ~ NA_character_)
-          ) %>% 
+          ) %>%
       filter(!is.na(gene_set))
-    result <- result %>% 
+    result <- result %>%
       select(probe, hgnc_symbol, gene_set, everything())
     
     return(result)

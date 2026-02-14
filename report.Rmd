@@ -1,7 +1,7 @@
 ---
 title: "Assignment Bioinformatics Basics Report"
-author: "Taylor Falk"
-date: "11/17/2021"
+author: "Dennis Godin"
+date: "2/14/2026"
 output: html_document
 ---
 
@@ -232,6 +232,8 @@ do *not* need to do this in a function, use the space provided below to create
 this plot. 
 ```{r boxplot from long format data using ggplot2, echo=FALSE}
 library(ggplot2)
-
+ggplot(data=long_format_data, mapping=aes(x=hgnc, y=value),
+       xlab = "Gene Set", ylab = "Expression Value", fill = gene_set)+
+      geom_boxplot()
 
 ```
