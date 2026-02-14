@@ -67,7 +67,7 @@ filter_15 <- function(tibble){
    return(result)
  
 }
-
+df_2 <- filter_15(df)
 
 #### Gene name conversion ####
 
@@ -105,8 +105,6 @@ affy_to_hgnc <- function(affy_vector) {
     return(result)
 }
 
-ids <- affy_to_hgnc(df_2)
-ids
 
 #' Reduce a tibble of expression data to only the rows in good_genes or bad_genes.
 #'
@@ -138,7 +136,18 @@ ids
 #' `1 202860_at   DENND4B good        7.16      ...`
 #' `2 204340_at   TMEM187 good        6.40      ...`
 reduce_data <- function(expr_tibble, names_ids, good_genes, bad_genes){
-    return(NULL)
+    table1 <- expr_tibble %>% 
+    left_join(names_ids, by = c("probe" = "affy_hg_u133_plus_2"))
+    result <- table1 %>% 
+      mutate(gene_set = case_when(hgnc_symbol %in% good_genes ~ "good",
+          hgnc_symbol %in% bad_genes  ~ "bad",
+          TRUE ~ NA_character_)
+          ) %>% 
+      filter(!is.na(gene_set))
+    result <- result %>% 
+      select(probe, hgnc_symbol, gene_set, everything())
+    
+    return(result)
 }
 
 #' Convert a wide format tibble to long for easy plotting
@@ -152,6 +161,9 @@ reduce_data <- function(expr_tibble, names_ids, good_genes, bad_genes){
 #'
 #' @examples
 convert_to_long <- function(tibble) {
-    return(NULL)
+    result <- tibble %>%
+    pivot_longer(cols = -c(probe, hgnc, gene_set), names_to = "sample",
+                 values_to = "value")
+  
+    return(result)
 }
-
