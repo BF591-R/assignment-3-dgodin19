@@ -1,7 +1,6 @@
 #!/usr/bin/Rscript
-## Author: Taylor Falk
-## tfalk@bu.edu
-## BU BF591
+## Author: Dennis Godin
+## BU BF530
 ## Assignment Bioinformatics Basics
 
 #### Bioconductor ####
@@ -19,6 +18,7 @@ if (!require("biomaRt", quietly = TRUE)){
 }
 suppressPackageStartupMessages(library(biomaRt))
 suppressPackageStartupMessages(library(tidyverse))
+library(tidyverse)
 
 #### Loading and processing data ####
 #' Load Expression Data
@@ -35,8 +35,12 @@ suppressPackageStartupMessages(library(tidyverse))
 #' @examples 
 #' `data <- load_expression('/project/bf528/project_1/data/example_intensity_data.csv')`
 load_expression <- function(filepath) {
-    return(NULL)
+  result <- read.csv(filepath)
+  result <- as_tibble(result)
+  return(result)
 }
+df <- load_expression("data/example_intensity_data_subset.csv")
+df
 
 #' Filter 15% of the gene expression values.
 #'
@@ -50,9 +54,20 @@ load_expression <- function(filepath) {
 #' `> str(samples)`
 #' `tibble [40,158 × 1] (S3: tbl_df/tbl/data.frame)`
 #' `$ probe: chr [1:40158] "1007_s_at" "1053_at" "117_at" "121_at" ...`
+#' 
+
+
+
 filter_15 <- function(tibble){
-    return(NULL)
+  n_expr <- ncol(tibble) - 1
+  tibble$percent_above_15 <- rowSums(tibble[,-1] > log2(15)) / n_expr
+  result <- tibble %>%
+    filter(percent_above_15 >= 0.15) %>%
+    select(probe)
+   return(result)
+ 
 }
+
 
 #### Gene name conversion ####
 
@@ -79,8 +94,19 @@ filter_15 <- function(tibble){
 #' `4        1553551_s_at      MT-ND2`
 #' `5           202860_at     DENND4B`
 affy_to_hgnc <- function(affy_vector) {
-    return(NULL)
+    affy_vector <- as.character(affy_vector[[1]])
+    mart <- useMart("ensembl")
+    mart <- useDataset("hsapiens_gene_ensembl",mart)
+    result <- getBM(attributes = c("affy_hg_u133_plus_2", "hgnc_symbol"),
+        filters    = "affy_hg_u133_plus_2",
+        values     = affy_vector, 
+        mart       = mart)
+    result <- result %>% select(affy_hg_u133_plus_2, hgnc_symbol)
+    return(result)
 }
+
+ids <- affy_to_hgnc(df_2)
+ids
 
 #' Reduce a tibble of expression data to only the rows in good_genes or bad_genes.
 #'
