@@ -232,8 +232,10 @@ do *not* need to do this in a function, use the space provided below to create
 this plot. 
 ```{r boxplot from long format data using ggplot2, echo=FALSE}
 library(ggplot2)
-ggplot(data=long_format_data, mapping=aes(x=hgnc, y=value),
-       xlab = "Gene Set", ylab = "Expression Value", fill = gene_set)+
-      geom_boxplot()
+ggplot(data = long_format_data, aes(x = hgnc_symbol, y = value, fill = gene_set)) +
+  geom_boxplot() +
+  xlab("Gene Set") +
+  ylab("Expression Value") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
