@@ -1345,22 +1345,24 @@ reduced_data</code></pre>
 ## #   GSM972472 &lt;dbl&gt;, GSM972473 &lt;dbl&gt;, GSM972475 &lt;dbl&gt;, GSM972476 &lt;dbl&gt;,
 ## #   GSM972477 &lt;dbl&gt;, GSM972479 &lt;dbl&gt;, GSM972480 &lt;dbl&gt;, GSM972487 &lt;dbl&gt;,
 ## #   GSM972488 &lt;dbl&gt;, GSM972489 &lt;dbl&gt;, GSM972496 &lt;dbl&gt;, GSM972502 &lt;dbl&gt;, …</code></pre>
-<pre class="r"><code># data in long format for easy plotting in ggplot2
+<pre class="r"><code>colnames(reduced_data)[colnames(reduced_data) == &#39;hgnc_symbol&#39;] &lt;- &#39;hgnc&#39;
+
+# data in long format for easy plotting in ggplot2
 long_format_data &lt;- convert_to_long(reduced_data)
 long_format_data</code></pre>
 <pre><code>## # A tibble: 490 × 5
-##    probe       hgnc_symbol gene_set sample    value
-##    &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;     &lt;dbl&gt;
-##  1 202600_s_at NRIP1       good     GSM972389  9.61
-##  2 202600_s_at NRIP1       good     GSM972390  7.01
-##  3 202600_s_at NRIP1       good     GSM972396  9.55
-##  4 202600_s_at NRIP1       good     GSM972401  7.38
-##  5 202600_s_at NRIP1       good     GSM972409  8.61
-##  6 202600_s_at NRIP1       good     GSM972412  9.31
-##  7 202600_s_at NRIP1       good     GSM972413  9.10
-##  8 202600_s_at NRIP1       good     GSM972422  7.88
-##  9 202600_s_at NRIP1       good     GSM972429  6.99
-## 10 202600_s_at NRIP1       good     GSM972433  8.87
+##    probe       hgnc  gene_set sample    value
+##    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;dbl&gt;
+##  1 202600_s_at NRIP1 good     GSM972389  9.61
+##  2 202600_s_at NRIP1 good     GSM972390  7.01
+##  3 202600_s_at NRIP1 good     GSM972396  9.55
+##  4 202600_s_at NRIP1 good     GSM972401  7.38
+##  5 202600_s_at NRIP1 good     GSM972409  8.61
+##  6 202600_s_at NRIP1 good     GSM972412  9.31
+##  7 202600_s_at NRIP1 good     GSM972413  9.10
+##  8 202600_s_at NRIP1 good     GSM972422  7.88
+##  9 202600_s_at NRIP1 good     GSM972429  6.99
+## 10 202600_s_at NRIP1 good     GSM972433  8.87
 ## # ℹ 480 more rows</code></pre>
 </div>
 </div>

@@ -144,6 +144,7 @@ reduce_data <- function(expr_tibble, names_ids, good_genes, bad_genes){
           TRUE ~ NA_character_)
           ) %>%
       filter(!is.na(gene_set))
+    #colnames(result)[colnames(result) == 'hgnc_symbol'] <- 'hgnc'
     result <- result %>%
       select(probe, hgnc_symbol, gene_set, everything())
     
@@ -162,7 +163,7 @@ reduce_data <- function(expr_tibble, names_ids, good_genes, bad_genes){
 #' @examples
 convert_to_long <- function(tibble) {
     result <- tibble %>%
-    pivot_longer(cols = -c(probe, hgnc_symbol, gene_set), names_to = "sample",
+    pivot_longer(cols = -c(probe, hgnc, gene_set), names_to = "sample",
                  values_to = "value")
   
     return(result)

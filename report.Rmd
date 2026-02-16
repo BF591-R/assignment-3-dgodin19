@@ -218,10 +218,12 @@ and the values column named 'values' (the default).
 ```{r convert standard tibble format to long format for plotting}
 # original data in "wide" format
 reduced_data
+colnames(reduced_data)[colnames(reduced_data) == 'hgnc_symbol'] <- 'hgnc'
 
 # data in long format for easy plotting in ggplot2
 long_format_data <- convert_to_long(reduced_data)
 long_format_data
+
 ```
 
 ## Plotting the expression values as a boxplot using ggplot2
@@ -232,7 +234,7 @@ do *not* need to do this in a function, use the space provided below to create
 this plot. 
 ```{r boxplot from long format data using ggplot2, echo=FALSE}
 library(ggplot2)
-ggplot(data = long_format_data, aes(x = hgnc_symbol, y = value, fill = gene_set)) +
+ggplot(data = long_format_data, aes(x = hgnc, y = value, fill = gene_set)) +
   geom_boxplot() +
   xlab("Gene Set") +
   ylab("Expression Value") +
